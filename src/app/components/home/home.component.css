@@ -6,7 +6,6 @@ body {
   color: #444;
   font-family: "Open Sans", sans-serif;
 }
-
 a {
   color: #1bb1dc;
   transition: 0.5s;
@@ -173,7 +172,7 @@ h6{
 }
 
 #header .logo h1 {
-  font-family: 'monstrat',sans-serif;
+  /* font-family: "Montserrat", sans-serif; */
   font-size: 30px;
   margin: 0;
   padding: 0;
@@ -269,15 +268,15 @@ h6{
 }
 
 .main-nav a {
-  display: block;
-  position: relative;
-  color: #413e66;
-  padding: 10px 15px;
-  transition: 0.3s;
-  font-size: 14px;
-  font-family: "Open Sans", sans-serif;
-  text-transform: uppercase;
-  font-weight: 600;
+    display: block;
+    position: relative;
+    color: #413e66;
+    padding: 10px 15px;
+    transition: 0.3s;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    font-weight: 200;
 }
 
 .main-nav a:hover,
@@ -615,7 +614,7 @@ h6{
 
 #services h4{
   font-size: 18px;
-  font-family: 'monstrat',sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
 #services .icon i {
@@ -643,6 +642,7 @@ h6{
   margin-bottom: 0;
   text-align: left;
   font-family: 'Open Sans',sans-serif;
+  color: #444444;
 }
 
 /* Why Us Section
@@ -714,6 +714,8 @@ h6{
 
 #call-to-action .cta-text {
   color: #fff;
+  font-family: 'Open Sans',sans-serif;
+  font-size: 16px;
 }
 
 #call-to-action .cta-btn {
@@ -1877,7 +1879,7 @@ sup {
 }
 
 a {
-  color: #9c27b0;
+  color: #1bb1dc;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
@@ -2281,7 +2283,7 @@ sup {
 }
 
 a {
-  color: #9c27b0;
+  color: #1bb1dc;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
