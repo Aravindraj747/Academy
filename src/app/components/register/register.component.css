@@ -1,5 +1,6 @@
 /* Google Roboto Font Import */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 /* Colors Variriables */
 :root {
@@ -148,10 +149,24 @@ input {
     outline: 1px solid red;
 } */
 
+.mat-spinner {
+  position: relative;
+  left: 350px;
+  bottom: 350px;
+}
+
+.spinner-overlay {
+  opacity: 0.5;
+}
+
 form :is(input[type="date"]:invalid, input[type="file"]:invalid):not(:focus, :placeholder-shown) {
     outline: 1px solid transparent;
 }
 
+.registration-successful-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
 /*Responsive Styling*/
 @media only screen and (max-width: 580px) {
     .form-inline {
@@ -174,4 +189,10 @@ form :is(input[type="date"]:invalid, input[type="file"]:invalid):not(:focus, :pl
     form {
         width: 100%;
     }
+
+  .mat-spinner {
+    position: relative;
+    left: 150px;
+    bottom: 450px;
+  }
 }

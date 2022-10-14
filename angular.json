@@ -34,12 +34,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "400kb"
                 }
               ],
               "fileReplacements": [
@@ -95,6 +95,16 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "coaching:build:production",
+            "firebaseProject": "decode-tech-academy",
+            "firebaseHostingSite": "decodetechacademy"
           }
         }
       }

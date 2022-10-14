@@ -1,27 +1,41 @@
 <main>
+  <div *ngIf="!isRegistrationCompleted">
     <h2>Registration Form</h2>
-    <form action="">
+    <form action="" [class.spinner-overlay]="spinnerActive">
         <h3>Contact Information</h3>
         <div class="form-inline">
-            <div class="form-group"> <label for="">First Name <span>*</span></label> <input type="text"
-                     required> </div>
-            <div class="form-group"> <label for="">Last Name <span>*</span></label> <input type="text" 
-                    required> </div>
+            <div class="form-group"> <label for="">First Name <span>*</span></label>
+              <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.firstName" required>
+            </div>
+            <div class="form-group"> <label for="">Last Name <span>*</span></label>
+              <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.lastName" required>
+            </div>
         </div>
         <div class="form-inline">
-            <div class="form-group"> <label for="">Email Address <span>*</span></label> <input type="email"
-                     required> </div>
-            <div class="form-group"> <label for="">Phone Number <span>*</span></label> <input type="tel"
-                     required> </div>
+            <div class="form-group"> <label for="">Email Address <span>*</span></label>
+              <input type="email" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.emailAddress" required>
+            </div>
+            <div class="form-group"> <label for="">Phone Number <span>*</span></label>
+              <input type="tel" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.phoneNumber" required>
+            </div>
         </div> <br>
         <h3>Other Details</h3>
-        <div class="form-group"> <label for="">College Name</label> <input type="text"
-                 required> </div>
-        <div class="form-group"> <label for="">Year</label> <input type="text" required> </div>
-        <div class="form-group"> <label for="">Department</label> <input type="text"> </div>
+        <div class="form-group"> <label for="">College Name</label>
+          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.collegeName" required> </div>
+        <div class="form-group"> <label for="">Year</label>
+          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.year" required>
+        </div>
+        <div class="form-group"> <label for="">Department</label>
+          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.department">
+        </div>
         <div class="button" style="display:flex;justify-content:center;">
-            <button mat-raised-button color="primary">Register Now</button>
-            <a mat-raised-button href="home" style="margin-left:10px">Cancel</a>
+            <button mat-raised-button color="primary" (click)="register()">Register</button>
         </div>
     </form>
+  <mat-spinner *ngIf="spinnerActive" class="mat-spinner" [diameter]="60"></mat-spinner>
+
+  </div>
+  <div *ngIf="isRegistrationCompleted">
+    <h1 class="registration-successful-text">You have successfully registered. You will receive call from us.</h1>
+  </div>
 </main>
