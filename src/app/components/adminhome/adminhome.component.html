@@ -1,0 +1,152 @@
+<mat-toolbar>
+  <p>Decode Tech Academy</p>
+  <div class="profile">
+    <nav>
+      <ul>
+        <li>
+          <span>
+            Welcome Admin!
+          </span>
+        <ul>
+          <li>
+            <a>
+              <p (click)="home()">Home</p>
+            </a>
+          </li>
+          <li>
+            <a>
+              <p (click)="upload()">Upload</p>
+            </a>
+          </li>
+          <li>
+            <a>
+              <p (click)="loginCreation()">Login Creation</p>
+            </a>
+          </li>
+          <li>
+            <a>
+              <p (click)="showAnswer()">Answers</p>
+            </a>
+          </li>
+          <li>
+            <a>
+              <p (click)="logout()">Logout</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</mat-toolbar>
+<main>
+  <div class="table-wrapper" *ngIf="!isLoginCreation && !isUploadQuestion && !isShowAnswer">
+    <table class="fl-table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let stu of studentDetails">
+        <td>{{stu.name}}</td>
+        <td>{{stu.email}}</td>
+        <td>{{stu.phoneNumber}}</td>
+        <!-- <td><a style="justify-content:space-between;"><span style="color:blue;cursor: pointer;"(click)=deleteStudent(stu)>Expand</span></a></td>td -->
+        <td><details>
+          <summary>
+            Password Check
+            <span class="icon">👇</span>
+          </summary>
+          <p>
+            {{stu.password}}
+          </p>
+        </details></td>
+      </tr>
+      <tbody>
+    </table>
+  </div>
+
+<!--Creating student login-->
+<div *ngIf="isLoginCreation">
+  <div class="container">
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form [formGroup]="studentForm">
+      <h3>LOGIN CREATION</h3>
+      <label for="name">Name</label>
+      <input type="text" id="name" formControlName="name" placeholder="Jack R" required>
+      <span class="alert" *ngIf="name && name.invalid && name.touched">
+            Input field is required.
+        </span>
+      <label for="email">Email</label>
+      <input type="text" id="email" formControlName="email" placeholder="model@gmail.com" required>
+      <span class="alert" *ngIf="email && email.invalid && email.touched">
+            Input field is required.
+        </span>
+      <label for="phoneNumber">phoneNumber</label>
+      <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="phoneNumber" required>
+      <span class="alert" *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">
+            Input field is required.
+        </span>
+      <label for="password">Email</label>
+      <input type="text" id="password" formControlName="password" placeholder="password" required>
+      <span class="alert" *ngIf="password && password.invalid && password.touched">
+            Input field is required.
+        </span>
+      <button type="submit" (click)="submit()" [disabled]="studentForm.invalid"><span style="color:white ;">Create</span></button>
+    </form>
+  </div>
+</div>
+
+<!--Uploading question-->
+
+<div *ngIf="isUploadQuestion">
+  <div class="container">
+    <h3>Upload Question</h3>
+    <label>Topic</label>
+    <input type="text" #t placeholder="Enter topic"  required>
+
+    <label>Question</label>
+    <input type="text" #qt placeholder="Enter Question topic"  required>
+
+    <label>Select question</label>
+    <input type="file" (change)="chooseFile($event)" required>
+
+    <button type="submit" (click)="uploadQuestion(t.value,qt.value)"><span style="color: white">Upload</span></button>
+  </div>
+</div>
+<div *ngIf="isShowAnswer">
+    <div *ngFor="let stu of studentDetails">
+      <mat-accordion>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{stu.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+          <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}} -->
+          {{stu.email}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div *ngIf="studentAnswer(stu.email)">
+        <div *ngFor="let ans of answer">
+          <p>{{ans.questionName}}</p>
+          <a href="{{ans.url}}">Click</a>
+        </div>
+        <!-- <p>{{ans.url}}</p> -->
+      </div>
+      <div *ngIf="!studentAnswer(stu.email)">
+        <p style="color:red;">No submission</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+    </div>
+</div>
+</main>

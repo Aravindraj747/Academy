@@ -1,38 +1,50 @@
 <main>
   <div *ngIf="!isRegistrationCompleted">
     <h2>Registration Form</h2>
-    <form action="" [class.spinner-overlay]="spinnerActive">
-        <h3>Contact Information</h3>
-        <div class="form-inline">
-            <div class="form-group"> <label for="">First Name <span>*</span></label>
-              <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.firstName" required>
-            </div>
-            <div class="form-group"> <label for="">Last Name <span>*</span></label>
-              <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.lastName" required>
-            </div>
+    <form action="" [formGroup]="registrationForm">
+      <h3>Contact Information</h3>
+      <div class="form-inline">
+        <div class="form-group"> <label>First Name <span>*</span></label>
+              <input type="text" id="firstName" formControlName="firstName" required>
+              <span style="color: red;" *ngIf="firstName && firstName.invalid && firstName.touched">
+                This input field is required
+              </span>
         </div>
-        <div class="form-inline">
+        <div class="form-group"> <label for="lastName">Last Name <span>*</span></label>
+          <input type="text" id="lastName" formControlName="lastName" required>
+          <span style="color: red;" *ngIf="lastName && lastName.invalid && lastName.touched">
+            This input field is required
+          </span>
+        </div>
+      </div>
+      <div class="form-inline">
             <div class="form-group"> <label for="">Email Address <span>*</span></label>
-              <input type="email" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.emailAddress" required>
+              <input type="email" id="email" formControlName="emailAddress" required>
+              <span style="color: red;" *ngIf="email && email.invalid && email.touched">
+                Invalid Gmail
+              </span>
             </div>
             <div class="form-group"> <label for="">Phone Number <span>*</span></label>
-              <input type="tel" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.phoneNumber" required>
+              <input type="tel" id="phoneNumber" formControlName="phoneNumber" required>
+              <span style="color: red;" *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">
+                Invalid Number
+              </span>
             </div>
         </div> <br>
         <h3>Other Details</h3>
         <div class="form-group"> <label for="">College Name</label>
-          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.collegeName" required> </div>
-        <div class="form-group"> <label for="">Year</label>
-          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.year" required>
+          <input type="text" id="collegeName" formControlName="collegeName" required> </div>
+        <div class="form-group"> <label for="">Year of Passing</label>
+          <input type="text" id="year" formControlName="year" required>
         </div>
         <div class="form-group"> <label for="">Department</label>
-          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="registration.department">
+          <input type="text" id="department" formControlName="department">
         </div>
         <div class="button" style="display:flex;justify-content:center;">
-            <button mat-raised-button color="primary" (click)="register()">Register</button>
+            <button mat-raised-button color="primary" (click)="register()" [disabled]="registrationForm.invalid">Register</button>
         </div>
     </form>
-  <mat-spinner *ngIf="spinnerActive" class="mat-spinner" [diameter]="60"></mat-spinner>
+    <mat-spinner *ngIf="spinnerActive" class="mat-spinner" [diameter]="60"></mat-spinner>
 
   </div>
   <div *ngIf="isRegistrationCompleted">

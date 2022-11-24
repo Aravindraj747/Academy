@@ -1,0 +1,40 @@
+<main style="background-color: white;">
+<mat-toolbar>
+  <p>Decode Tech Acacemy</p>
+  <p>Welcome {{students.name}}</p>
+  <a><p (click)="logout()" style="cursor: pointer;">
+    Logout<i style="margin-left: 5px;" class="fi fi-ss-sign-out-alt"></i></p></a>
+</mat-toolbar>
+<div class="table-wrapper">
+  <table class="fl-table">
+    <thead>
+    <tr>
+      <th>Topic</th>
+      <th>Question</th>
+      <th>View Question</th>
+      <th>Upload</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let q of questions">
+      <td>{{q.topic}}</td>
+      <td>{{q.question}}</td>
+        <td><button mat-button color="primary" (click)="openDialog(q)">View</button></td>
+      <div>
+        <div *ngIf="!checkIfAlreadyAnswered(q.question)">
+          <td style="display: flex;justify-content: center;">
+            <input type="file" required (change)="chooseFile($event)" style="max-width:100%;" class="file">
+            <button mat-stroked-button color="primary" (click)="uploadAnswer(q.question)">
+              Upload
+            </button>
+          </td>
+        </div>
+        <div *ngIf="checkIfAlreadyAnswered(q.question)">
+          <p style="color: green;justify-content:center;display:flex;">Submitted</p>
+        </div>
+      </div>
+    </tr>
+    <tbody>
+  </table>
+</div>
+</main>

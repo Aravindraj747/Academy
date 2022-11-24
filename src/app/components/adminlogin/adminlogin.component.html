@@ -1,0 +1,21 @@
+<div class="container">  
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form [formGroup]="adminForm">
+        <h3>ADMIN LOGIN</h3>
+  
+        <label for="username">Username</label>
+        <input type="text" id="email" formControlName="email" placeholder="john@gmail.com" required>
+        <span *ngIf="email && email.invalid && email.touched">
+            Input field is required.
+        </span>
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password" formControlName="password"  required>
+        <span *ngIf="password && password.invalid && password.touched">
+            Input field is required.
+        </span>
+        <button type="submit" (click)="submit()"><span style="color:white ;">Log In</span></button>
+    </form>
+  </div>

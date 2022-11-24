@@ -1,17 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import {Registration} from "../model/registration";
-import {FirestoreService} from "../../services/firestore.service";
+import { Registration } from "../model/registration";
+import { FirestoreService } from "../../services/firestore.service";
 
 import firebase from "firebase/compat/app";
 import Timestamp = firebase.firestore.Timestamp;
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
+// form
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  // form module
+  registrationForm = new FormGroup({
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    emailAddress: new FormControl('', [Validators.required, Validators.email]),
+    phoneNumber: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    collegeName: new FormControl('', [Validators.required]),
+    year: new FormControl('', [Validators.required]),
+    department: new FormControl('', [Validators.required]),
+  });
 
   registration: Registration = {
     collegeName: "",
@@ -25,22 +38,45 @@ export class RegisterComponent implements OnInit {
   };
 
   isRegistrationCompleted: boolean = false;
+  registrationDate: any;
   spinnerActive: boolean = false;
 
   constructor(private firestoreService: FirestoreService,
-              private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
-
+  get firstName() {
+    return this.registrationForm.get('firstName');
+  }
+  get lastName() {
+    return this.registrationForm.get('lastName');
+  }
+  get email() {
+    return this.registrationForm.get('email');
+  }
+  get phoneNumber() {
+    return this.registrationForm.get('phoneNumber');
+  }
+  get collegeName() {
+    return this.registrationForm.get('collegeName');
+  }
+  get year() {
+    return this.registrationForm.get('year');
+  }
+  get department() {
+    return this.registrationForm.get('department');
+  }
   register() {
     this.spinnerActive = true;
-    console.log(this.registration)
-    if (!this.registrationValidator()) {
-      this.spinnerActive = false;
-      return;
-    }
-    this.registration.registrationDate = Timestamp.now()
+    const { firstName, lastName, emailAddress, phoneNumber, collegeName, year, department } = this.registrationForm.value;
+    this.registration.firstName = firstName!;
+    this.registration.lastName = lastName!;
+    this.registration.emailAddress = emailAddress!;
+    this.registration.collegeName = collegeName!;
+    this.registration.year = year!;
+    this.registration.department = department!;
+    this.registration.registrationDate = Timestamp.now();
     this.firestoreService.register(this.registration).then(res => {
       console.log("registered");
       this.spinnerActive = false;
@@ -51,40 +87,6 @@ export class RegisterComponent implements OnInit {
       this.openSnackBar('Error occurred', 'Try again')
     })
   }
-
-  registrationValidator(): boolean {
-    console.log(this.registration);
-    if (this.registration.firstName === '') {
-      this.openSnackBar('Enter the FirstName', 'Retry');
-      return false;
-    }
-    if (this.registration.lastName === '') {
-      this.openSnackBar('Enter the Lastname', 'Retry');
-      return false;
-    }
-    if (this.registration.emailAddress === '' || this.registration.emailAddress === undefined) {
-      this.openSnackBar('Enter the Email address', 'Retry');
-      return false;
-    }
-    if (this.registration.phoneNumber === '') {
-      this.openSnackBar('Enter valid Phone number', 'Retry');
-      return false;
-    }
-    if (this.registration.collegeName === '') {
-      this.openSnackBar('Enter College Name', 'Retry');
-      return false;
-    }
-    if (this.registration.year === '') {
-      this.openSnackBar('Enter the year', 'Retry');
-      return false;
-    }
-    if (this.registration.department === '') {
-      this.openSnackBar('Enter the Department', 'Retry');
-      return false;
-    }
-    return true;
-  }
-
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
