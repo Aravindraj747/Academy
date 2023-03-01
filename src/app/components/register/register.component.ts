@@ -76,6 +76,7 @@ export class RegisterComponent implements OnInit {
     this.registration.collegeName = collegeName!;
     this.registration.year = year!;
     this.registration.department = department!;
+    this.registration.phoneNumber = phoneNumber!;
     this.registration.registrationDate = Timestamp.now();
     this.firestoreService.register(this.registration).then(res => {
       console.log("registered");
