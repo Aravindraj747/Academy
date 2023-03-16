@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationserviceService} from "../../services/authenticationservice.service";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import { FirestoreService } from 'src/app/services/firestore.service';
+import {FirestoreService} from 'src/app/services/firestore.service';
+import {StudentService} from "../../services/student.service";
+import {Student} from "../model/student";
 
 @Component({
   selector: 'app-studentlogin',
@@ -12,52 +14,51 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 })
 export class StudentloginComponent implements OnInit {
 
-  studentForm= new FormGroup({
-    email: new FormControl('',[Validators.required,Validators.email]),
-    password: new FormControl('',[Validators.required])
+  studentForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
   });
+
   constructor(private authService: AuthenticationserviceService,
               private route: Router,
               private _snackBar: MatSnackBar,
-              private firestoreService: FirestoreService) { }
+              private firestoreService: FirestoreService,
+              private studentService: StudentService) {
+  }
 
   ngOnInit(): void {
   }
-  get email(){
+
+  get email() {
     return this.studentForm.get('email');
   }
-  get password(){
+
+  get password() {
     return this.studentForm.get('password');
   }
 
-  submit(){
-    const {email,password}= this.studentForm.value;
-    console.log(email,password);
-    this.authService.isStudent(email!).subscribe(res=>{
-      this.firestoreService.isStudent = 'true';
-      console.log('res',res);
-      if(res.docs.length>0){
-        console.log('in auth');
-        this.authService.studentLogin(email!,password!).then((res)=>{
-          this.firestoreService.isStudent = 'true';
-          this.getStudent(email!).then(()=>{
-            this.route.navigate(['studenthome'], { queryParams: { email: email} });
-          });
-          console.log('Student loggedin');
-          }).catch(err => {
-          this.openSnackBar('Unable to login', 'Retry');
+  submit() {
+    const {email, password} = this.studentForm.value;
+    this.authService.isStudent(email!).subscribe(res => {
+        res.forEach(ee => {
+          console.log(ee.data())
+          this.studentService.saveStudent(<Student>ee.data());
         })
-      }
+        if (res.docs.length > 0) {
+          console.log('in auth');
+          this.authService.studentLogin(email!, password!).then((res) => {
+            this.route.navigate(['studenthome']);
+          }).catch(err => {
+            this.openSnackBar('Unable to login', 'Retry');
+          })
+        }
       }
     );
   }
 
-  async getStudent(email: string) {
-    await this.firestoreService.getStudent(email);
-}
-  openSnackBar(message:string,action:string){
-    this._snackBar.open(message,action,{
-      duration:2000
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000
     });
   }
 }

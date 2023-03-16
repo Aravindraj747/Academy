@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Registration} from "../components/model/registration";
 import {Student} from "../components/model/student";
 import {Question} from "../components/model/question";
-import { Answer } from '../components/model/answer';
-import { collection, deleteDoc, doc } from 'firebase/firestore';
-
+import {Answer} from '../components/model/answer';
+import {collection, deleteDoc, doc} from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,8 @@ export class FirestoreService {
 
   isAdmin!: string;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore) {
+  }
 
 // Add new registration
   register(registration: Registration) {
@@ -26,38 +26,39 @@ export class FirestoreService {
   }
 
 //Adding new student login data
-  studentCreation(student:Student){
+  studentCreation(student: Student) {
     return this.firestore.collection("studentLogin").doc(student.email).set(student);
   }
 
 // To Upload Question
-  uploadQuestion(question:Question){
+  uploadQuestion(question: Question) {
     return this.firestore.collection('questions').doc(question.topic).set(question);
   }
 
 // Student to upload answer
-  uploadAnswer(answer: Answer){
+  uploadAnswer(answer: Answer) {
     console.log('in firestoreservice');
     console.log(answer.submitedBy);
     return this.firestore.collection('answers').doc(answer.submitedDate).set(answer);
   }
 
 // To display question to student
-  getQuestions(){
+  getQuestions() {
     return this.firestore.collection('questions');
   }
 
 // get student details to display in admin home
-  getStudents(){
+  getStudents() {
     return this.firestore.collection('studentLogin');
   }
 
 // to get the login student details
-  getStudent(email:string){
+  getStudent(email: string) {
     return this.firestore.collection('studentLogin').doc<Student>(email).get().subscribe(res => {
       this.student = <Student>res.data();
       sessionStorage.setItem('studentLogin', this.isStudent);
       sessionStorage.setItem('studentData', JSON.stringify(this.student));
+      console.log('Data saved');
     });
   }
 
@@ -70,40 +71,38 @@ export class FirestoreService {
   }
 
 // Checking admin loggedin or not for Authguard
-  getAdminLogin(){
-    if(this.isAdmin === undefined){
+  getAdminLogin() {
+    if (this.isAdmin === undefined) {
       this.isAdmin = sessionStorage.getItem('adminLogin')!;
     }
     return this.isAdmin;
   }
 
 // get student details for loggedin student using email
-  getStudentDetails(){
+  getStudentDetails() {
     if (this.student === undefined) {
       this.student = JSON.parse(sessionStorage.getItem('studentData')!);
     }
     return this.student;
   }
 
-// 
+//
   // getQuestionDetail(type:string){
   //   return this.firestore.collection('questions',ref=>ref.where('topic','==',type));
   // }
 
-// get answer and disply to admin
-  getAnswers(){
+// get answer and display to admin
+  getAnswers() {
     return this.firestore.collection('answers');
   }
 
-// get answer from respective stduent to display in adminhome
-  getCurrentStudentAnswer(email:string){
+// get answer from respective student to display in adminhome
+  getCurrentStudentAnswer(email: string) {
     console.log(email);
-    // return this.firestore.collection('answers',ref=>ref.where('submitedBy','==',email));
-    // return this.firestore.collection('answers').doc(email);
     return this.firestore.collection('answers').ref.where('submitedBy', '==', email);
   }
 
-  //     
+  //
   // getStudentAnswer(email:string){
   //   return this.firestore.collection('answers').ref.where('submitedBy','==',email);
   //   }
